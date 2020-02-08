@@ -4,11 +4,9 @@ import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  gql,
-  useQuery,
   ApolloProvider,
 } from '@apollo/client';
-import { GetPerson, GetPersonVariables } from './gen/GetPerson';
+import { PersonCard } from './components/cards';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -20,49 +18,51 @@ const client = new ApolloClient({
   }),
 });
 
-const GET_PERSON_QUERY = gql`
-  query GetPerson($id: ID!) {
-    person(id: $id) {
-      id
-      name
-      species {
-        name
-      }
-      height
-      homeworld {
-        name
-      }
-      mass
-      filmConnection {
-        edges {
-          node {
-            title
-          }
+/*
+query getStarship {
+  starship(id: "c3RhcnNoaXBzOjE1") {
+    id
+    name
+    model
+    hyperdriveRating
+    length
+    crew
+    passengers
+    filmConnection {
+      edges {
+        node {
+          title
         }
       }
     }
   }
-`;
+}
 
-const Thing = () => {
-  const { data } = useQuery<GetPerson, GetPersonVariables>(GET_PERSON_QUERY, {
-    variables: {
-      id: 'cGVvcGxlOjQ=',
-    },
-  });
-  if (!data) return <span>...</span>;
-  if (!data.person) {
-    throw new Error('Invalid ID');
+query getAllPeople {
+  allPeople {
+    totalCount
+    edges {
+      node {
+        id
+        height
+      }
+    }
   }
-  return (
-    <>
-      <div>{data.person.name}</div>
-      <div>{data.person.height}</div>
-      <div>{data.person.homeworld?.name}</div>
-      {<pre>{JSON.stringify(data, null, 2)}</pre>}
-    </>
-  );
-};
+}
+
+query getAllStarships {
+  allStarships {
+    totalCount
+    edges {
+      node {
+        id
+        hyperdriveRating
+      }
+    }
+  }
+}
+*/
+
 const App = () => {
   return (
     <ApolloProvider client={client}>
@@ -79,7 +79,9 @@ const App = () => {
           >
             Learn React
           </a>
-          <Thing />
+          <div style={{}}>
+            <PersonCard id="cGVvcGxlOjQ=" />
+          </div>
         </header>
       </div>
     </ApolloProvider>

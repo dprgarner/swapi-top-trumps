@@ -61,13 +61,13 @@ export interface GetPerson_person {
    */
   readonly species: GetPerson_person_species | null;
   /**
-   * The height of the person in centimeters.
-   */
-  readonly height: number | null;
-  /**
    * A planet that this person was born on or inhabits.
    */
   readonly homeworld: GetPerson_person_homeworld | null;
+  /**
+   * The height of the person in centimeters.
+   */
+  readonly height: number | null;
   /**
    * The mass of the person in kilograms.
    */
