@@ -8,7 +8,7 @@ import {
   useQuery,
   ApolloProvider,
 } from '@apollo/client';
-import { GetPerson } from './gen/GetPerson';
+import { GetPerson, GetPersonVariables } from './gen/GetPerson';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -21,18 +21,18 @@ const client = new ApolloClient({
 });
 
 const GET_PERSON_QUERY = gql`
-  query GetPerson {
-    person(id: "cGVvcGxlOjQ=") {
+  query GetPerson($id: ID!) {
+    person(id: $id) {
       id
       name
       species {
         name
       }
       height
-      mass
       homeworld {
         name
       }
+      mass
       filmConnection {
         edges {
           node {
@@ -45,13 +45,15 @@ const GET_PERSON_QUERY = gql`
 `;
 
 const Thing = () => {
-  const { data } = useQuery<GetPerson>(GET_PERSON_QUERY);
-
+  const { data } = useQuery<GetPerson, GetPersonVariables>(GET_PERSON_QUERY, {
+    variables: {
+      id: 'cGVvcGxlOjQ=',
+    },
+  });
   if (!data) return <span>...</span>;
   if (!data.person) {
     throw new Error('Invalid ID');
   }
-
   return (
     <>
       <div>{data.person.name}</div>

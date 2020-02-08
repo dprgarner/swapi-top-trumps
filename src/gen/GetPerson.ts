@@ -7,74 +7,78 @@
 // ====================================================
 
 export interface GetPerson_person_species {
-  __typename: "Species";
+  readonly __typename: "Species";
   /**
    * The name of this species.
    */
-  name: string | null;
+  readonly name: string | null;
 }
 
 export interface GetPerson_person_homeworld {
-  __typename: "Planet";
+  readonly __typename: "Planet";
   /**
    * The name of this planet.
    */
-  name: string | null;
+  readonly name: string | null;
 }
 
 export interface GetPerson_person_filmConnection_edges_node {
-  __typename: "Film";
+  readonly __typename: "Film";
   /**
    * The title of this film.
    */
-  title: string | null;
+  readonly title: string | null;
 }
 
 export interface GetPerson_person_filmConnection_edges {
-  __typename: "PersonFilmsEdge";
+  readonly __typename: "PersonFilmsEdge";
   /**
    * The item at the end of the edge
    */
-  node: GetPerson_person_filmConnection_edges_node | null;
+  readonly node: GetPerson_person_filmConnection_edges_node | null;
 }
 
 export interface GetPerson_person_filmConnection {
-  __typename: "PersonFilmsConnection";
+  readonly __typename: "PersonFilmsConnection";
   /**
    * A list of edges.
    */
-  edges: (GetPerson_person_filmConnection_edges | null)[] | null;
+  readonly edges: ReadonlyArray<(GetPerson_person_filmConnection_edges | null)> | null;
 }
 
 export interface GetPerson_person {
-  __typename: "Person";
+  readonly __typename: "Person";
   /**
    * The ID of an object
    */
-  id: string;
+  readonly id: string;
   /**
    * The name of this person.
    */
-  name: string | null;
+  readonly name: string | null;
   /**
    * The species that this person belongs to, or null if unknown.
    */
-  species: GetPerson_person_species | null;
+  readonly species: GetPerson_person_species | null;
   /**
    * The height of the person in centimeters.
    */
-  height: number | null;
-  /**
-   * The mass of the person in kilograms.
-   */
-  mass: number | null;
+  readonly height: number | null;
   /**
    * A planet that this person was born on or inhabits.
    */
-  homeworld: GetPerson_person_homeworld | null;
-  filmConnection: GetPerson_person_filmConnection | null;
+  readonly homeworld: GetPerson_person_homeworld | null;
+  /**
+   * The mass of the person in kilograms.
+   */
+  readonly mass: number | null;
+  readonly filmConnection: GetPerson_person_filmConnection | null;
 }
 
 export interface GetPerson {
-  person: GetPerson_person | null;
+  readonly person: GetPerson_person | null;
+}
+
+export interface GetPersonVariables {
+  readonly id: string;
 }

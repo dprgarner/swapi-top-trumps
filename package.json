@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "update-schema": "rm schema.gql && apollo client:download-schema --endpoint=https://swapi-graphql.netlify.com/.netlify/functions/index schema.gql",
-    "update-types": "apollo client:codegen --localSchemaFile schema.gql --includes src/**/*.tsx --outputFlat --target typescript ./src/gen && rm src/gen/globalTypes.ts"
+    "update-types": "apollo client:codegen --localSchemaFile schema.gql --includes src/**/*.tsx --target typescript gen --useReadOnlyTypes --globalTypesFile ''"
   },
   "eslintConfig": {
     "extends": "react-app"

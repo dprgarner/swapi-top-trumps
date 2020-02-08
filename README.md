@@ -17,6 +17,7 @@ Routes:
 - Pick k distinct from n items.
 
 Cpts:
+
 - Card
 - StarshipCard
 - PersonCard
@@ -29,6 +30,30 @@ Cpts:
   - Play People
 - HistoryEntry
 - HistoryPage
+
+## Updating the GraphQL metadata
+
+To update the schema:
+
+```
+yarn update-schema
+```
+
+This is unlikely to happen often as the SWAPI is fairly stable.
+
+To update the generated TypeScript types for GraphQL queries:
+
+```
+yarn update-types
+```
+
+or, to start in watch mode:
+
+```
+yarn update-types --watch
+```
+
+At present, the codegen tool creates an empty globalTypesFile that can't be handled by the default create-react-app settings. The workaround here is to generate the file outside of the `src/` directory.
 
 ## Original CRA readme
 
