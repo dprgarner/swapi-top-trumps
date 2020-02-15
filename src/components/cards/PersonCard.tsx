@@ -1,50 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import { gql, useQuery } from '@apollo/client';
 
 import { GetPerson, GetPersonVariables } from './gen/GetPerson';
+import { Card, CardFields, CardField, CardLogo } from './cardComponents';
 import rebelLogo from './rebel.svg';
 
 type PersonCardProps = {
   id: string;
 };
-
-const cardWidth = 350;
-
-const Card = styled.div`
-  border-radius: 5px;
-  border: 1px solid black;
-  margin: 10px;
-  max-width: ${cardWidth}px;
-  overflow: hidden;
-`;
-
-const CardLogo = styled.img`
-  width: ${cardWidth}px;
-`;
-
-const CardFields = styled.div`
-  /* border: 1px solid green; */
-  /* max-width: 300px; */
-  padding: 10px;
-  /* border-radius: 5px; */
-`;
-
-type CardFieldProps = {
-  name: string;
-  value: string | number | null | undefined;
-  units?: string;
-};
-
-const CardField = ({ name, value, units }: CardFieldProps) =>
-  value ? (
-    <div>
-      <span>
-        <strong>{name}: </strong>
-      </span>
-      <span>{`${value}${units || ''}`}</span>
-    </div>
-  ) : null;
 
 export const GET_PERSON_QUERY = gql`
   query GetPerson($id: ID!) {
