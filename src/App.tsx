@@ -6,7 +6,7 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from '@apollo/client';
-import { PersonCard, StarshipCard } from './components/cards';
+import Game from './Game';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -18,73 +18,10 @@ const client = new ApolloClient({
   }),
 });
 
-/*
-query getStarship {
-  starship(id: "c3RhcnNoaXBzOjE1") {
-    id
-    name
-    model
-    hyperdriveRating
-    length
-    crew
-    passengers
-    filmConnection {
-      edges {
-        node {
-          title
-        }
-      }
-    }
-  }
-}
-
-query getAllPeople {
-  allPeople {
-    totalCount
-    edges {
-      node {
-        id
-        height
-      }
-    }
-  }
-}
-
-query getAllStarships {
-  allStarships {
-    totalCount
-    edges {
-      node {
-        id
-        hyperdriveRating
-      }
-    }
-  }
-}
-*/
-
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <div style={{}}>
-            <PersonCard id="cGVvcGxlOjQ=" />
-            <StarshipCard id="c3RhcnNoaXBzOjE1" />
-          </div>
-        </header>
-      </div>
+      <Game />
     </ApolloProvider>
   );
 };

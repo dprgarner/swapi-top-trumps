@@ -16,10 +16,7 @@ export const CardLogo = styled.img`
 `;
 
 export const CardFields = styled.div`
-  /* border: 1px solid green; */
-  /* max-width: 300px; */
   padding: 10px;
-  /* border-radius: 5px; */
 `;
 
 type CardFieldProps = {
