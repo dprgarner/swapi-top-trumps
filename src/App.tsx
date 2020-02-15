@@ -9,7 +9,9 @@ import {
 import Game from './Game';
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    dataIdFromObject: object => object.id,
+  }),
   link: new HttpLink({
     uri: 'https://swapi-graphql.netlify.com/.netlify/functions/index',
     fetchOptions: {
