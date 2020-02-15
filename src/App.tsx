@@ -6,7 +6,7 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from '@apollo/client';
-import { PersonCard } from './components/cards';
+import { PersonCard, StarshipCard } from './components/cards';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -81,6 +81,7 @@ const App = () => {
           </a>
           <div style={{}}>
             <PersonCard id="cGVvcGxlOjQ=" />
+            <StarshipCard id="c3RhcnNoaXBzOjE1" />
           </div>
         </header>
       </div>
