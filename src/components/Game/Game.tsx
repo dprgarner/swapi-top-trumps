@@ -8,6 +8,7 @@ import { RandomPerson } from './gen/RandomPerson';
 import { PeopleRound, StarshipsRound } from '../../types';
 import getRandom from './getRandom';
 import Round from '../Round';
+import GameLayout from '../GameLayout';
 
 type RoundsState = (StarshipsRound | PeopleRound)[];
 
@@ -121,13 +122,12 @@ const Game = () => {
   };
 
   return (
-    <>
-      <Round
-        round={rounds[0]}
-        playStarshipsRound={playStarshipsRound}
-        playPeopleRound={playPeopleRound}
-      />
-    </>
+    <GameLayout
+      playStarshipsRound={playStarshipsRound}
+      playPeopleRound={playPeopleRound}
+    >
+      <Round round={rounds[0]} />
+    </GameLayout>
   );
 };
 

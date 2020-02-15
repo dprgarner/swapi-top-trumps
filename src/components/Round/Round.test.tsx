@@ -50,7 +50,6 @@ const defaultProps: RoundProps = {
 
 it('renders nothing when no round', () => {
   const { queryByText } = render(<Round {...defaultProps} />);
-  expect(queryByText('Play Starships Round')).toBeInTheDocument();
   expect(queryByText(/StarshipCard/)).not.toBeInTheDocument();
   expect(queryByText(/PeopleCard/)).not.toBeInTheDocument();
 });
@@ -107,25 +106,4 @@ it('displays a draw', () => {
     />,
   );
   expect(queryByText('Draw')).toBeInTheDocument();
-});
-
-it('plays more rounds', () => {
-  const playPeopleRound = jest.fn();
-  const playStarshipsRound = jest.fn();
-  const { getByText } = render(
-    <Round
-      playPeopleRound={playPeopleRound}
-      playStarshipsRound={playStarshipsRound}
-    />,
-  );
-  fireEvent.click(getByText(/Play People Round/));
-  expect(playPeopleRound).toHaveBeenCalled();
-  fireEvent.click(getByText(/Play Starships Round/));
-  expect(playStarshipsRound).toHaveBeenCalled();
-});
-
-it('shows buttons when a round has been played', () => {
-  const { getByText } = render(<Round {...defaultProps} round={peopleRound} />);
-  expect(getByText(/Play People Round/)).toBeInTheDocument();
-  expect(getByText(/Play Starships Round/)).toBeInTheDocument();
 });

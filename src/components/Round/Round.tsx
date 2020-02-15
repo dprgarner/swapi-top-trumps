@@ -9,13 +9,6 @@ export type RoundProps = {
   playPeopleRound: () => void;
 };
 
-const Layout = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
-`;
-
 const CardGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -31,22 +24,6 @@ const Winner = styled.div`
   font-size: 20px;
   justify-content: flex-end;
   margin-bottom: 32px;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex: 0 0 auto;
-`;
-
-const Button = styled.button`
-  background: #e8e8e8;
-  border-radius: 2px;
-  border: 1px solid #666;
-  color: #222;
-  cursor: pointer;
-  flex: 1 0 auto;
-  margin: 16px;
-  padding: 16px;
 `;
 
 type Person = { id: string; name: string; height: number };
@@ -75,7 +52,7 @@ const getStarshipWinner = (starships: Starship[]): Starship | null => {
   return max;
 };
 
-const RoundCards = ({ round }: { round?: StarshipsRound | PeopleRound }) => {
+const Round = ({ round }: { round?: StarshipsRound | PeopleRound }) => {
   if (!round) return null;
   if (round.type === 'people') {
     const winner = getPeopleWinner(round.people);
@@ -111,15 +88,5 @@ const RoundCards = ({ round }: { round?: StarshipsRound | PeopleRound }) => {
   }
   return null;
 };
-
-const Round = ({ round, playPeopleRound, playStarshipsRound }: RoundProps) => (
-  <Layout>
-    <RoundCards round={round} />
-    <ButtonGroup>
-      <Button onClick={playPeopleRound}>Play People Round</Button>
-      <Button onClick={playStarshipsRound}>Play Starships Round</Button>
-    </ButtonGroup>
-  </Layout>
-);
 
 export default Round;
