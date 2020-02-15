@@ -6,13 +6,10 @@ import { GetAllStarships } from './gen/GetAllStarships';
 import { RandomStarship } from './gen/RandomStarship';
 import { RandomPerson } from './gen/RandomPerson';
 import { PeopleRound, StarshipsRound } from '../../types';
+import getRandom from './getRandom';
 import Round from '../Round';
 
 type RoundsState = (StarshipsRound | PeopleRound)[];
-
-function getRandom<T>(items: T[]): T {
-  return items[Math.floor(Math.random() * items.length)];
-}
 
 export const GET_ALL_PEOPLE = gql`
   query GetAllPeople {
@@ -60,7 +57,7 @@ const RANDOM_STARSHIP = gql`
   }
 `;
 
-const players = 2;
+const PLAYERS = 2;
 
 const Game = () => {
   const {
@@ -95,29 +92,29 @@ const Game = () => {
     .map(starship => starship?.node?.id) as string[];
 
   const playPeopleRound = () => {
-    const people = [...Array(players)].map(() => {
+    const people = getRandom(PLAYERS, peopleIds).map(id => {
       const res = client.readFragment<RandomPerson>({
-        id: getRandom(peopleIds),
+        id,
         fragment: RANDOM_PERSON,
       });
       if (!res || !res?.id || !res?.name || !res?.height) {
-        throw new Error('missing starship data');
+        throw new Error('missing people data');
       }
-      const { id, name, height } = res;
+      const { name, height } = res;
       return { id, name, height };
     });
     setRounds(r => [{ type: 'people', people }, ...r]);
   };
   const playStarshipsRound = () => {
-    const starships = [...Array(players)].map(() => {
+    const starships = getRandom(PLAYERS, starshipIds).map(id => {
       const res = client.readFragment<RandomStarship>({
-        id: getRandom(starshipIds),
+        id,
         fragment: RANDOM_STARSHIP,
       });
       if (!res || !res?.id || !res?.name || !res?.hyperdriveRating) {
         throw new Error('missing starship data');
       }
-      const { id, name, hyperdriveRating } = res;
+      const { name, hyperdriveRating } = res;
       return { id, name, hyperdriveRating };
     });
     setRounds(r => [{ type: 'starships', starships }, ...r]);
