@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { gql, useQuery, useApolloClient } from '@apollo/client';
 
-import { PersonCard, StarshipCard } from './components/cards';
 import { GetAllPeople } from './gen/GetAllPeople';
 import { GetAllStarships } from './gen/GetAllStarships';
 import { RandomStarship } from './gen/RandomStarship';
@@ -139,8 +138,6 @@ const Game = () => {
       <button onClick={() => playStarshipsRound()}>Play Ships</button>
       <button onClick={() => playPeopleRound()}>Play People</button>
       <pre>{JSON.stringify(rounds, null, 2)}</pre>
-      <PersonCard id="cGVvcGxlOjQ=" />
-      <StarshipCard id="c3RhcnNoaXBzOjE1" />
     </>
   );
 };

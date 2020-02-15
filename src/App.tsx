@@ -6,7 +6,7 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from '@apollo/client';
-import Game from './Game';
+import Game from './components/Game';
 
 const client = new ApolloClient({
   cache: new InMemoryCache({
@@ -23,6 +23,11 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
+      {/* <Round
+        round={null}
+        playStarshipsRound={playStarshipsRound}
+        playPeopleRound={playPeopleRound}
+      /> */}
       <Game />
     </ApolloProvider>
   );
