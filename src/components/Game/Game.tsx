@@ -5,6 +5,14 @@ import { GetAllPeople } from './gen/GetAllPeople';
 import { GetAllStarships } from './gen/GetAllStarships';
 import { RandomStarship } from './gen/RandomStarship';
 import { RandomPerson } from './gen/RandomPerson';
+import { PeopleRound, ShipsRound } from '../../types';
+import Round from '../Round';
+
+type RoundsState = (ShipsRound | PeopleRound)[];
+
+function getRandom<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)];
+}
 
 export const GET_ALL_PEOPLE = gql`
   query GetAllPeople {
@@ -36,26 +44,13 @@ export const GET_ALL_STARSHIPS = gql`
   }
 `;
 
-type RoundsState = (
-  | {
-      ships: {
-        id: string;
-        name: string;
-        hyperdriveRating: number;
-      }[];
-    }
-  | {
-      people: {
-        id: string;
-        name: string;
-        height: number;
-      }[];
-    }
-)[];
-
-function getRandom<T>(items: T[]): T {
-  return items[Math.floor(Math.random() * items.length)];
-}
+const RANDOM_PERSON = gql`
+  fragment RandomPerson on Person {
+    id
+    name
+    height
+  }
+`;
 
 const RANDOM_STARSHIP = gql`
   fragment RandomStarship on Starship {
@@ -64,13 +59,8 @@ const RANDOM_STARSHIP = gql`
     hyperdriveRating
   }
 `;
-const RANDOM_PERSON = gql`
-  fragment RandomPerson on Person {
-    id
-    name
-    height
-  }
-`;
+
+const players = 2;
 
 const Game = () => {
   const {
@@ -97,28 +87,14 @@ const Game = () => {
   ) {
     return <>{':('}</>;
   }
-  const starshipIds = starshipData.allStarships.edges
-    .filter(ship => ship?.node?.hyperdriveRating)
-    .map(ship => ship?.node?.id) as string[];
   const peopleIds = peopleData.allPeople.edges
     .filter(person => person?.node?.height)
     .map(person => person?.node?.id) as string[];
+  const starshipIds = starshipData.allStarships.edges
+    .filter(ship => ship?.node?.hyperdriveRating)
+    .map(ship => ship?.node?.id) as string[];
 
-  const playStarshipsRound = (players: number = 2) => {
-    const ships = [...Array(players)].map(() => {
-      const res = client.readFragment<RandomStarship>({
-        id: getRandom(starshipIds),
-        fragment: RANDOM_STARSHIP,
-      });
-      if (!res || !res?.id || !res?.name || !res?.hyperdriveRating) {
-        throw new Error('missing starship data');
-      }
-      const { id, name, hyperdriveRating } = res;
-      return { id, name, hyperdriveRating };
-    });
-    setRounds(r => [{ ships }, ...r]);
-  };
-  const playPeopleRound = (players: number = 2) => {
+  const playPeopleRound = () => {
     const people = [...Array(players)].map(() => {
       const res = client.readFragment<RandomPerson>({
         id: getRandom(peopleIds),
@@ -130,14 +106,33 @@ const Game = () => {
       const { id, name, height } = res;
       return { id, name, height };
     });
-    setRounds(r => [{ people }, ...r]);
+    setRounds(r => [{ type: 'people', people }, ...r]);
   };
+  const playStarshipsRound = () => {
+    const ships = [...Array(players)].map(() => {
+      console.log(players);
+      const res = client.readFragment<RandomStarship>({
+        id: getRandom(starshipIds),
+        fragment: RANDOM_STARSHIP,
+      });
+      if (!res || !res?.id || !res?.name || !res?.hyperdriveRating) {
+        throw new Error('missing starship data');
+      }
+      const { id, name, hyperdriveRating } = res;
+      return { id, name, hyperdriveRating };
+    });
+    console.log(JSON.stringify(ships));
+    setRounds(r => [{ type: 'ships', ships }, ...r]);
+  };
+  console.log(rounds);
 
   return (
     <>
-      <button onClick={() => playStarshipsRound()}>Play Ships</button>
-      <button onClick={() => playPeopleRound()}>Play People</button>
-      <pre>{JSON.stringify(rounds, null, 2)}</pre>
+      <Round
+        round={rounds[0]}
+        playStarshipsRound={playStarshipsRound}
+        playPeopleRound={playPeopleRound}
+      />
     </>
   );
 };

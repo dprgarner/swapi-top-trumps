@@ -43,10 +43,10 @@ const PersonCard = ({ id }: PersonCardProps) => {
     },
   );
   if (loading) return <span>...</span>;
-  if (error || !data) {
+  if (error) {
     throw error;
   }
-  if (!data.person) {
+  if (!data || !data.person) {
     throw new Error('Invalid ID');
   }
 
