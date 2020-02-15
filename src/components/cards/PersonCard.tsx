@@ -7,6 +7,7 @@ import rebelLogo from './rebel.svg';
 
 type PersonCardProps = {
   id: string;
+  victor: boolean;
 };
 
 export const GET_PERSON_QUERY = gql`
@@ -33,7 +34,7 @@ export const GET_PERSON_QUERY = gql`
   }
 `;
 
-const PersonCard = ({ id }: PersonCardProps) => {
+const PersonCard = ({ id, victor }: PersonCardProps) => {
   const { data, loading, error } = useQuery<GetPerson, GetPersonVariables>(
     GET_PERSON_QUERY,
     {
@@ -51,7 +52,7 @@ const PersonCard = ({ id }: PersonCardProps) => {
   }
 
   return (
-    <Card>
+    <Card victor={victor}>
       <CardLogo src={rebelLogo} alt={data.person.name || 'Person'} />
       <CardFields>
         <CardField name="Name" value={data.person.name} />

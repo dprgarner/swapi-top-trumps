@@ -1,6 +1,6 @@
-export type ShipsRound = {
-  type: 'ships';
-  ships: {
+export type StarshipsRound = {
+  type: 'starships';
+  starships: {
     id: string;
     name: string;
     hyperdriveRating: number;

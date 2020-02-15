@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 const cardWidth = 350;
 
-export const Card = styled.div`
+export const Card = styled.div<{ victor: boolean }>`
   border-radius: 5px;
-  border: 1px solid black;
+  border: ${props => (props.victor ? '4px solid red' : '1px solid black')};
   margin: 10px;
   max-width: ${cardWidth}px;
   overflow: hidden;

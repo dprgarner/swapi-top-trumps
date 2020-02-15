@@ -5,10 +5,10 @@ import { GetAllPeople } from './gen/GetAllPeople';
 import { GetAllStarships } from './gen/GetAllStarships';
 import { RandomStarship } from './gen/RandomStarship';
 import { RandomPerson } from './gen/RandomPerson';
-import { PeopleRound, ShipsRound } from '../../types';
+import { PeopleRound, StarshipsRound } from '../../types';
 import Round from '../Round';
 
-type RoundsState = (ShipsRound | PeopleRound)[];
+type RoundsState = (StarshipsRound | PeopleRound)[];
 
 function getRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
@@ -91,8 +91,8 @@ const Game = () => {
     .filter(person => person?.node?.height)
     .map(person => person?.node?.id) as string[];
   const starshipIds = starshipData.allStarships.edges
-    .filter(ship => ship?.node?.hyperdriveRating)
-    .map(ship => ship?.node?.id) as string[];
+    .filter(starship => starship?.node?.hyperdriveRating)
+    .map(starship => starship?.node?.id) as string[];
 
   const playPeopleRound = () => {
     const people = [...Array(players)].map(() => {
@@ -109,8 +109,7 @@ const Game = () => {
     setRounds(r => [{ type: 'people', people }, ...r]);
   };
   const playStarshipsRound = () => {
-    const ships = [...Array(players)].map(() => {
-      console.log(players);
+    const starships = [...Array(players)].map(() => {
       const res = client.readFragment<RandomStarship>({
         id: getRandom(starshipIds),
         fragment: RANDOM_STARSHIP,
@@ -121,10 +120,8 @@ const Game = () => {
       const { id, name, hyperdriveRating } = res;
       return { id, name, hyperdriveRating };
     });
-    console.log(JSON.stringify(ships));
-    setRounds(r => [{ type: 'ships', ships }, ...r]);
+    setRounds(r => [{ type: 'starships', starships }, ...r]);
   };
-  console.log(rounds);
 
   return (
     <>

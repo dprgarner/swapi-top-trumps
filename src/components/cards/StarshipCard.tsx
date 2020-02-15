@@ -7,6 +7,7 @@ import empireLogo from './empire.svg';
 
 type StarshipCardProps = {
   id: string;
+  victor: boolean;
 };
 
 export const GET_STARSHIP_QUERY = gql`
@@ -30,7 +31,7 @@ export const GET_STARSHIP_QUERY = gql`
   }
 `;
 
-const StarshipCard = ({ id }: StarshipCardProps) => {
+const StarshipCard = ({ id, victor }: StarshipCardProps) => {
   const { data, loading, error } = useQuery<GetStarship, GetStarshipVariables>(
     GET_STARSHIP_QUERY,
     {
@@ -48,7 +49,7 @@ const StarshipCard = ({ id }: StarshipCardProps) => {
   }
 
   return (
-    <Card>
+    <Card victor={victor}>
       <CardLogo src={empireLogo} alt={data.starship.name || 'Starship'} />
       <CardFields>
         <CardField name="Name" value={data.starship.name} />
