@@ -1,35 +1,6 @@
-# Swapi
+# Swapi Top Trumps
 
-## Random Notes
-
-https://docs.google.com/document/d/1L3rPSx5HNBW1JmrklqqdjZ1TAOfKxJ8GgqmjwZtCo44/edit
-
-Routes:
-
-/
-/starships
-/people
-/history
-
-- Store history in React state? Or window local storage? Or Apollo cache? start with history for now.
-- Tests
-- Fetch total count of people and starships on page load.
-- Pick k distinct from n items.
-
-Cpts:
-
-- Card
-- StarshipCard
-- PersonCard
-- BattlePage
-- buttons
-  - Play/Play Again
-  - Switch to Starships/People
-  - See History (?)
-  - Play Starships
-  - Play People
-- HistoryEntry
-- HistoryPage
+A rough implementation of Top Trumps using the Star Wars GraphQL API.
 
 ## Updating the GraphQL metadata
 
