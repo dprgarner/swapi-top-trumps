@@ -4,10 +4,17 @@ import GameLayout from './GameLayout';
 import { MemoryRouter, Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 
+const defaultProps = {
+  playPeopleRound: jest.fn(),
+  playStarshipsRound: jest.fn(),
+  players: 2,
+  setPlayers: jest.fn(),
+};
+
 it('renders buttons and children', () => {
   const { getByText } = render(
     <MemoryRouter>
-      <GameLayout playPeopleRound={jest.fn()} playStarshipsRound={jest.fn()}>
+      <GameLayout {...defaultProps}>
         <span>Hello world!</span>
       </GameLayout>
       ,
@@ -23,6 +30,7 @@ it('calls play callbacks', () => {
   const { getByText } = render(
     <MemoryRouter>
       <GameLayout
+        {...defaultProps}
         playPeopleRound={playPeopleRound}
         playStarshipsRound={playStarshipsRound}
       >
@@ -41,7 +49,7 @@ it('switches route', () => {
   const history = createMemoryHistory();
   const { getByText } = render(
     <Router history={history}>
-      <GameLayout playPeopleRound={jest.fn()} playStarshipsRound={jest.fn()}>
+      <GameLayout {...defaultProps}>
         <span>Hello world!</span>
       </GameLayout>
     </Router>,
@@ -51,4 +59,19 @@ it('switches route', () => {
 
   fireEvent.click(getByText(/View Last Round/));
   expect(history.location.pathname).toBe('/');
+});
+
+it('sets players', () => {
+  const setPlayers = jest.fn();
+  const { getByLabelText, getByRole } = render(
+    <MemoryRouter>
+      <GameLayout {...defaultProps} players={3} setPlayers={setPlayers}>
+        <span>Hello world!</span>
+      </GameLayout>
+    </MemoryRouter>,
+  );
+  expect((getByRole('textbox') as HTMLInputElement).value).toBe('3');
+
+  fireEvent.change(getByLabelText(/Players:/), { target: { value: '4' } });
+  expect(setPlayers).toBeCalledWith(4);
 });
