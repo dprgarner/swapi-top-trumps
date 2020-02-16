@@ -18,7 +18,7 @@ const Winner = styled.div`
   flex: 1 0 auto;
   font-size: 20px;
   justify-content: flex-end;
-  margin-bottom: 160px;
+  margin-bottom: 200px;
 `;
 
 const Round = ({ round }: { round: StarshipsRound | PeopleRound }) => {

@@ -61,8 +61,6 @@ const RANDOM_STARSHIP = gql`
   }
 `;
 
-const PLAYERS = 2;
-
 const Note = styled.div`
   height: 100vh;
   display: flex;
@@ -83,6 +81,7 @@ const Game = () => {
   } = useQuery<GetAllStarships>(GET_ALL_STARSHIPS);
   const client = useApolloClient();
   const [rounds, setRounds] = useState<RoundsState>([]);
+  const [players, setPlayers] = useState(2);
 
   if (peopleLoading || starshipLoading) {
     return <Note>{'Loading...'}</Note>;
@@ -103,7 +102,7 @@ const Game = () => {
     .map(starship => starship?.node?.id) as string[];
 
   const playPeopleRound = () => {
-    const people = getRandom(PLAYERS, peopleIds).map(id => {
+    const people = getRandom(players, peopleIds).map(id => {
       const res = client.readFragment<RandomPerson>({
         id,
         fragment: RANDOM_PERSON,
@@ -117,7 +116,7 @@ const Game = () => {
     setRounds(r => [{ type: 'people', people }, ...r]);
   };
   const playStarshipsRound = () => {
-    const starships = getRandom(PLAYERS, starshipIds).map(id => {
+    const starships = getRandom(players, starshipIds).map(id => {
       const res = client.readFragment<RandomStarship>({
         id,
         fragment: RANDOM_STARSHIP,
@@ -135,6 +134,8 @@ const Game = () => {
     <GameLayout
       playStarshipsRound={playStarshipsRound}
       playPeopleRound={playPeopleRound}
+      players={players}
+      setPlayers={setPlayers}
     >
       <Switch>
         <Route path="/history">

@@ -6,6 +6,8 @@ type GameLayoutProps = {
   children: React.ReactNode;
   playPeopleRound: () => void;
   playStarshipsRound: () => void;
+  players: number;
+  setPlayers: (players: number) => void;
 };
 
 const Layout = styled.div`
@@ -23,7 +25,7 @@ const ButtonGroup = styled.div`
   flex-flow: row wrap;
   position: fixed;
   width: 100%;
-  margin-bottom: 16px;
+  padding-bottom: 16px;
 `;
 
 const Button = styled.button<{ fullWidth?: boolean }>`
@@ -37,10 +39,19 @@ const Button = styled.button<{ fullWidth?: boolean }>`
   padding: 16px;
 `;
 
+const Number = styled.label`
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  width: 100%;
+`;
+
 const GameLayout = ({
   children,
   playPeopleRound,
   playStarshipsRound,
+  players,
+  setPlayers,
 }: GameLayoutProps) => {
   const history = useHistory();
   return (
@@ -61,6 +72,16 @@ const GameLayout = ({
             </Button>
           </Route>
         </Switch>
+        <Number>
+          <span>{`Players:  `}</span>
+          <input
+            type="number"
+            min={2}
+            max={6}
+            value={players}
+            onChange={e => setPlayers(parseInt(e.currentTarget.value, 10))}
+          />
+        </Number>
       </ButtonGroup>
     </Layout>
   );
