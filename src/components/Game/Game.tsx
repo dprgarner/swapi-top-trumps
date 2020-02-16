@@ -9,6 +9,7 @@ import { PeopleRound, StarshipsRound } from '../../types';
 import getRandom from './getRandom';
 import Round from '../Round';
 import GameLayout from '../GameLayout';
+import RoundHistory from '../RoundHistory';
 
 type RoundsState = (StarshipsRound | PeopleRound)[];
 
@@ -126,7 +127,8 @@ const Game = () => {
       playStarshipsRound={playStarshipsRound}
       playPeopleRound={playPeopleRound}
     >
-      <Round round={rounds[0]} />
+      <RoundHistory rounds={rounds} />
+      {/* <Round round={rounds[0]} /> */}
     </GameLayout>
   );
 };

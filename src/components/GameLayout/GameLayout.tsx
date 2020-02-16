@@ -14,9 +14,17 @@ const Layout = styled.div`
   justify-content: space-between;
 `;
 
+const Spacer = styled.div`
+  flex: 1 1 auto;
+`;
+
 const ButtonGroup = styled.div`
+  background: #fff;
+  border-top: 1px solid #666;
+  bottom: 0;
   display: flex;
-  flex: 0 0 auto;
+  position: fixed;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -37,6 +45,7 @@ const GameLayout = ({
 }: GameLayoutProps) => (
   <Layout>
     {children}
+    <Spacer />
     <ButtonGroup>
       <Button onClick={playPeopleRound}>Play People Round</Button>
       <Button onClick={playStarshipsRound}>Play Starships Round</Button>
