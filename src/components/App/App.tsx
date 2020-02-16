@@ -5,9 +5,9 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from '@apollo/client';
-
-import Game from './components/Game';
 import { BrowserRouter } from 'react-router-dom';
+
+import Game from '../Game';
 
 const client = new ApolloClient({
   cache: new InMemoryCache({
