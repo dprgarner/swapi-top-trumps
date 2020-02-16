@@ -5,7 +5,8 @@ import { InMemoryCache } from '@apollo/client';
 import { Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 
-import Game, { GET_ALL_PEOPLE, GET_ALL_STARSHIPS } from './Game';
+import Game from './Game';
+import { GET_ALL_PEOPLE, GET_ALL_STARSHIPS } from './queries';
 
 jest.mock('../cards', () => ({
   PersonCard: ({ id }: { id: string }) => <span>{`PersonCard: ${id}`}</span>,
