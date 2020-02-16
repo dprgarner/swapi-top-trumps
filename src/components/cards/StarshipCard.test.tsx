@@ -44,7 +44,7 @@ const executorMock = {
 it('renders Executor', async () => {
   const { getByText } = render(
     <MockedProvider mocks={[executorMock]} addTypename={false}>
-      <StarshipCard id="c3RhcnNoaXBzOjE1" />
+      <StarshipCard id="c3RhcnNoaXBzOjE1" victor={false} />
     </MockedProvider>,
   );
   const getField = (name: string | RegExp) => getByText(name).parentNode;

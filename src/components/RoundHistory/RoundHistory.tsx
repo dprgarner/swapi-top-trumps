@@ -18,6 +18,10 @@ const RoundCard = styled.div<{ isPerson?: boolean }>`
   min-width: 600px;
 `;
 
+const Spacer = styled.div`
+  flex: 1 1 auto;
+`;
+
 const PersonRound = ({ round }: { round: PeopleRound }) => {
   const winner = getPeopleWinner(round.people);
   return (
@@ -64,6 +68,7 @@ const RoundHistory = ({ rounds }: RoundHistoryProps) => {
           <StarshipRound key={i} round={round} />
         ),
       )}
+      <Spacer />
     </>
   );
 };

@@ -57,7 +57,7 @@ const darthVaderMock = {
 it('renders Darth Vader', async () => {
   const { queryByText } = render(
     <MockedProvider mocks={[darthVaderMock]} addTypename={false}>
-      <PersonCard id="cGVvcGxlOjQ=" />
+      <PersonCard id="cGVvcGxlOjQ=" victor={false} />
     </MockedProvider>,
   );
   await wait(() => {

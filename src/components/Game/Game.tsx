@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { gql, useQuery, useApolloClient } from '@apollo/client';
+import { Switch, Route } from 'react-router-dom';
 
 import { GetAllPeople } from './gen/GetAllPeople';
 import { GetAllStarships } from './gen/GetAllStarships';
@@ -10,6 +11,7 @@ import getRandom from './getRandom';
 import Round from '../Round';
 import GameLayout from '../GameLayout';
 import RoundHistory from '../RoundHistory';
+import styled from 'styled-components';
 
 type RoundsState = (StarshipsRound | PeopleRound)[];
 
@@ -61,6 +63,13 @@ const RANDOM_STARSHIP = gql`
 
 const PLAYERS = 2;
 
+const Note = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Game = () => {
   const {
     data: peopleData,
@@ -76,7 +85,7 @@ const Game = () => {
   const [rounds, setRounds] = useState<RoundsState>([]);
 
   if (peopleLoading || starshipLoading) {
-    return <>{'Loading...'}</>;
+    return <Note>{'Loading...'}</Note>;
   }
   if (
     peopleError ||
@@ -84,7 +93,7 @@ const Game = () => {
     !peopleData?.allPeople?.edges ||
     !starshipData?.allStarships?.edges
   ) {
-    return <>{':('}</>;
+    return <Note>{':('}</Note>;
   }
   const peopleIds = peopleData.allPeople.edges
     .filter(person => person?.node?.height)
@@ -127,8 +136,18 @@ const Game = () => {
       playStarshipsRound={playStarshipsRound}
       playPeopleRound={playPeopleRound}
     >
-      <RoundHistory rounds={rounds} />
-      {/* <Round round={rounds[0]} /> */}
+      <Switch>
+        <Route path="/history">
+          <RoundHistory rounds={rounds} />
+        </Route>
+        <Route path="/">
+          {rounds[0] ? (
+            <Round round={rounds[0]} />
+          ) : (
+            <Note>No rounds played yet.</Note>
+          )}
+        </Route>
+      </Switch>
     </GameLayout>
   );
 };

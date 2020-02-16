@@ -1,8 +1,11 @@
 import React from 'react';
-import { render, wait, fireEvent } from '@testing-library/react';
+import { wait, fireEvent, render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import Game, { GET_ALL_PEOPLE, GET_ALL_STARSHIPS } from './Game';
 import { InMemoryCache } from '@apollo/client';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
+
+import Game, { GET_ALL_PEOPLE, GET_ALL_STARSHIPS } from './Game';
 
 jest.mock('../cards', () => ({
   PersonCard: ({ id }: { id: string }) => <span>{`PersonCard: ${id}`}</span>,
@@ -91,37 +94,38 @@ const starshipsMock = {
   },
 };
 
-const ProvidedGame = () => (
-  <MockedProvider
-    mocks={[peopleMock, starshipsMock]}
-    cache={
-      new InMemoryCache({
-        dataIdFromObject: object => object.id,
-      })
-    }
-  >
-    <Game />
-  </MockedProvider>
-);
-
-it('renders an error state', async () => {
-  const { queryByText } = render(
-    <MockedProvider mocks={[]} addTypename={false}>
-      <Game />
-    </MockedProvider>,
+const renderWith = (
+  children: React.ReactElement,
+  { mocks = [peopleMock, starshipsMock] } = {},
+) => {
+  const history = createMemoryHistory();
+  const renderResult = render(
+    <Router history={history}>
+      <MockedProvider
+        mocks={mocks}
+        cache={
+          new InMemoryCache({
+            dataIdFromObject: object => object.id,
+          })
+        }
+      >
+        {children}
+      </MockedProvider>
+    </Router>,
   );
+  return { ...renderResult, history };
+};
+
+it('render an error state', async () => {
+  const { queryByText } = renderWith(<Game />, { mocks: [] });
   expect(queryByText('Loading...')).toBeInTheDocument();
   await wait(() => {
     expect(queryByText(':(')).toBeInTheDocument();
   });
 });
 
-it('renders the buttons', async () => {
-  const { getByText } = render(
-    <MockedProvider mocks={[peopleMock, starshipsMock]}>
-      <Game />
-    </MockedProvider>,
-  );
+it('render the buttons', async () => {
+  const { getByText } = renderWith(<Game />);
   expect(getByText('Loading...')).toBeInTheDocument();
   await wait(() => {
     expect(getByText('Play Starships Round')).toBeInTheDocument();
@@ -130,7 +134,7 @@ it('renders the buttons', async () => {
 });
 
 it('adds a spaceship round', async () => {
-  const { getByText } = render(<ProvidedGame />);
+  const { getByText } = renderWith(<Game />);
   await wait(() => {
     expect(getByText('Play Starships Round')).toBeInTheDocument();
   });
@@ -144,7 +148,7 @@ it('adds a spaceship round', async () => {
 });
 
 it('adds a people round', async () => {
-  const { getByText } = render(<ProvidedGame />);
+  const { getByText } = renderWith(<Game />);
   await wait(() => {
     expect(getByText('Play People Round')).toBeInTheDocument();
   });
@@ -158,7 +162,7 @@ it('adds a people round', async () => {
 });
 
 it('adds a people round after a starships round', async () => {
-  const { getByText } = render(<ProvidedGame />);
+  const { getByText } = renderWith(<Game />);
   await wait(() => {
     expect(getByText('Play Starships Round')).toBeInTheDocument();
   });
@@ -173,4 +177,22 @@ it('adds a people round after a starships round', async () => {
     expect(getByText('PersonCard: cGVvcGxlOjE=')).toBeInTheDocument();
     expect(getByText('Winner: Darth Vader (202cm)')).toBeInTheDocument();
   });
+});
+
+it('adds a spaceship round in history mode', async () => {
+  const { getByText } = renderWith(<Game />);
+  await wait(() => {
+    expect(getByText('Play Starships Round')).toBeInTheDocument();
+  });
+  fireEvent.click(getByText('Play Starships Round'));
+  fireEvent.click(getByText('View History'));
+
+  await wait(() => {
+    expect(getByText('Death Star')).toBeInTheDocument();
+  });
+  const gameSummary = getByText('Death Star').parentNode?.textContent;
+  expect([
+    'Millennium Falcon vs Death Star',
+    'Death Star vs Millennium Falcon',
+  ]).toContain(gameSummary);
 });

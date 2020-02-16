@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
-import Round, { RoundProps } from './Round';
+import Round from './Round';
 import { StarshipsRound, PeopleRound } from '../../types';
 
 jest.mock('../cards', () => ({
@@ -43,16 +43,10 @@ const starshipsRound: StarshipsRound = {
   ],
 };
 
-const defaultProps: RoundProps = {
+const defaultProps = {
   playPeopleRound: jest.fn(),
   playStarshipsRound: jest.fn(),
 };
-
-it('renders nothing when no round', () => {
-  const { queryByText } = render(<Round {...defaultProps} />);
-  expect(queryByText(/StarshipCard/)).not.toBeInTheDocument();
-  expect(queryByText(/PeopleCard/)).not.toBeInTheDocument();
-});
 
 it('renders a spaceships round', () => {
   const { queryByText } = render(

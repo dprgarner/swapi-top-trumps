@@ -4,12 +4,6 @@ import { PersonCard, StarshipCard } from '../cards';
 import { StarshipsRound, PeopleRound } from '../../types';
 import { getPeopleWinner, getStarshipWinner } from '../../winnerUtils';
 
-export type RoundProps = {
-  round?: StarshipsRound | PeopleRound;
-  playStarshipsRound: () => void;
-  playPeopleRound: () => void;
-};
-
 const CardGroup = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -24,11 +18,10 @@ const Winner = styled.div`
   flex: 1 0 auto;
   font-size: 20px;
   justify-content: flex-end;
-  margin-bottom: 32px;
+  margin-bottom: 160px;
 `;
 
-const Round = ({ round }: { round?: StarshipsRound | PeopleRound }) => {
-  if (!round) return null;
+const Round = ({ round }: { round: StarshipsRound | PeopleRound }) => {
   if (round.type === 'people') {
     const winner = getPeopleWinner(round.people);
     return (
